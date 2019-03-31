@@ -2,8 +2,8 @@ require('dotenv').config();
 var keys = require('./keys.js');
 var axios = require('axios');
 var moment = require('moment');
-
-//var spotify = new Spotify(keys.spotify);
+var Spotify = require('node-spotify-api');
+var spotify = new Spotify(keys.spotify);
 var command = process.argv[2];
 
 if (command === 'concert-this') {
@@ -22,7 +22,15 @@ if (command === 'concert-this') {
 }
 else if (command === 'spotify-this-song') {
     console.log(command);
-
+    let song = process.argv[3];
+    spotify.search({type: 'track', query: song, limit: 1}, function(err, data){
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+//-----------All data in an array------------        
+        console.log('Song: ' + data.tracks.name)
+        //console.log(data.tracks.items);
+    })
 }
 else if (command === 'movie-this') {
     console.log(command);
