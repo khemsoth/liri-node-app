@@ -12,15 +12,13 @@ if (command === 'concert-this') {
     axios
       .get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
       .then(function(res) {
-        console.log('---Venue Name---');
-        console.log(res.data.venue);
-        console.log('---Location---');
-        console.log('City: ' + res.venue.city);
-        console.log('State: ' + res.venue.region);
-        console.log('Country: ' + res.venue.country);
-        console.log('---Date---');
-        console.log(moment(res.data.datetime).format(MM/DD/YYYY));
-      })
+        let info = res.data;
+        for (var i = 0; i < info.length; i++) {
+          console.log('Venue: ' + info[i].venue.name);
+          console.log('Location: ' + info[i].venue.city + ',' + info[i].venue.region + ',' + info[i].venue.country);
+          console.log('Date: ' + moment(info[i].datetime).format('MM DD YYYY'));
+          console.log('----------------');
+      }})
 }
 else if (command === 'spotify-this-song') {
     console.log(command);
@@ -28,8 +26,24 @@ else if (command === 'spotify-this-song') {
 }
 else if (command === 'movie-this') {
     console.log(command);
-
-}
+    let movie = process.argv[3];
+    axios  
+      .get('http://www.omdbapi.com/?apikey=trilogy&t=' + movie)
+      .then(function(res){
+          console.log('Movie Title: ' + res.data.Title);
+          console.log('Year of Release: ' + res.data.Released);
+          console.log('IMDB Rating: ' + res.data.imdbRating);
+          if (res.data.Ratings.Source === 'Rotten Tomatoes'){
+            console.log('Rotten Tomatoes Rating: ' + res.data.Ratings.Source);
+          } else{
+              console.log('Rotten Tomatoes Rating: N/A');
+          }
+          console.log('Country of Production: ' + res.data.Country);
+          console.log('Movie Language: ' + res.data.Language);
+          console.log('Movie Plot: ' + res.data.Plot);
+          console.log('Actors/Actresses: ' + res.data.Actors);
+      }
+      )}
 else if(command === 'do-what-it-says'){
     console.log(command);
 
