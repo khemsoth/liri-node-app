@@ -23,13 +23,18 @@ if (command === 'concert-this') {
 else if (command === 'spotify-this-song') {
     console.log(command);
     let song = process.argv[3];
-    spotify.search({type: 'track', query: song, limit: 1}, function(err, data){
+    spotify.search({type: 'track', query: song, limit: 10}, function(err, data){
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-//-----------All data in an array------------        
-        console.log('Song: ' + data.tracks.name)
-        //console.log(data.tracks.items);
+//-----------All data in an array------------ 
+        let info = data.tracks;
+        for (var i = 0; i < info.items.length; i++) {
+          console.log('\r\nArtist: ' + info.items[i].artists[0].name);
+          console.log('Song: ' + info.items[i].name);
+          console.log('Preview: ' + info.items[i].external_urls.spotify);
+          console.log('Album: ' + info.items[i].album.name);
+        }
     })
 }
 else if (command === 'movie-this') {
